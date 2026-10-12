@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.env
+.venv/
+venv/
+secrets/
+# data caches (source PDFs are downloaded, not committed)
+data/pdfs/
+data/raw/
+data/sample/
+*.pdf
+chroma_db/
+*.sqlite3
+.cache/
+*.npy
+# model weights
+*.bin
+*.safetensors
+*.pt
+*.onnx

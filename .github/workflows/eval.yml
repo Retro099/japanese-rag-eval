@@ -1,0 +1,41 @@
+name: Eval
+on:
+  workflow_dispatch:
+    inputs:
+      run_llm:
+        description: "Also run the LLM answer eval (uses AICREDITS_API_KEY, capped by max_calls)"
+        type: boolean
+        default: false
+      max_calls:
+        description: "Hard cap on LLM HTTP calls"
+        default: "100"
+permissions:
+  contents: read
+concurrency:
+  group: eval
+  cancel-in-progress: false
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install (CPU torch)
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-eval.txt
+      - name: Retrieval eval (no LLM calls; BM25 + bge-m3, chunk-size ablation)
+        run: python eval/retrieval_eval.py --methods bm25 dense --chunk-sizes 256 512 1024 --out results/retrieval.json
+      - name: LLM answer eval
+        if: ${{ inputs.run_llm }}
+        env:
+          AICREDITS_API_KEY: ${{ secrets.AICREDITS_API_KEY }}
+        run: python eval/llm_eval.py --retriever dense --chunk-size 512 --max-calls ${{ inputs.max_calls }} --out results/llm_eval.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results
+          path: results/
