@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml)
 
-**About the questions:** all 42 gold questions and answers were **drafted by an AI assistant** from the PDF text. A script checked that every evidence quote appears on the stated page. **Author hand check: pending author check** (sample of 15, seed 42; this line will show how many were confirmed).
+**About the questions:** all 42 gold questions and answers were **drafted by an AI assistant** from the PDF text. A script checked that every evidence quote appears on the stated page. **Author hand-checked 15/42 (random seed 42): 15 correct, 0 flagged.** Sample IDs and excerpts: `results/checklist_sample.json`. The other 27 questions are not hand-checked yet.
 
 ## BM25 vs dense at a glance
 
@@ -104,7 +104,7 @@ The original demo app (FastAPI `api.py` + Streamlit `app/`, ChromaDB, Docker) is
 
 ## Limitations
 
-- **Gold set is AI-drafted; author hand check: pending author check.** Questions and answers were drafted by an AI assistant from the PDF text. Every evidence quote was checked by script to appear on the stated page. The 12 harder questions are also AI-written.
+- **Gold set is AI-drafted; author hand-checked 15/42 (random seed 42): 15 correct, 0 flagged.** The other 27 are not hand-checked. Questions and answers were drafted by an AI assistant from the PDF text. Every evidence quote was checked by script to appear on the stated page. The 12 harder questions are also AI-written.
 - Gold questions share wording with the text (mean bigram overlap 0.36 vs 0.09 for the harder set). That favours BM25 and makes gold-set scores optimistic. The harder set is small (12) and was written to avoid source wording, which works against BM25 by design.
 - Small corpus (33 pages, 3 PDFs from one white paper); one run, no confidence intervals. With 42 questions, one question = 2.4 points.
 - The judge is the same model as the generator; see the q12 example above.
