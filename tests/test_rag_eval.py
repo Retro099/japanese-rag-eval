@@ -71,3 +71,25 @@ def test_llm_budget_is_hard_cap():
     llm = LLM("http://127.0.0.1:9", "m", max_calls=0)
     with pytest.raises(BudgetExceeded):
         llm.chat([{"role": "user", "content": "hi"}])
+
+
+def test_hard_set_schema_and_helpers():
+    import sys
+    sys.path.insert(0, str(ROOT / "eval"))
+    from hard_eval import all_groups_hit, any_rank, load_hard
+
+    hard = load_hard()
+    assert len(hard) == 12 and {q["type"] for q in hard} == {"paraphrase", "multi"}
+    q = {"groups": [[{"doc": "a", "page": 1}], [{"doc": "b", "page": 2}]]}
+    top = [{"doc": "x", "page": 9}, {"doc": "b", "page": 2}, {"doc": "a", "page": 1}]
+    assert any_rank(top, q) == 2 and all_groups_hit(top, q)
+    assert not all_groups_hit(top[:2], q)
+
+
+def test_overlap_bounds():
+    import sys
+    sys.path.insert(0, str(ROOT / "eval"))
+    from overlap import overlap
+
+    assert overlap("クラウド利用率", "クラウド利用率は倍増") == 1.0
+    assert overlap("あいう", "かきく") == 0.0

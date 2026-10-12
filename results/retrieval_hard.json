@@ -1,0 +1,593 @@
+{
+ "pdf_sha256": {
+  "r07_summary01.pdf": "4b66041a2434f06d08259755d4002d5f7d368072c3298ff57321fe5b36662807",
+  "r07_n1110000.pdf": "8abb6baff09f4e8cb588bfe429c1d5af097eddf8474d0c1402d0ef40da3dc0cf",
+  "r07_n1120000.pdf": "81e5b8d497cfd1f4831e58c6a087daacc09f74a1ba8a3f69e73aff052a11b3d5"
+ },
+ "dense_model": "BAAI/bge-m3",
+ "llm_calls": 0,
+ "runs": [
+  {
+   "method": "bm25",
+   "chunk_size": 256,
+   "overlap": 50,
+   "n_chunks": 264,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.5,
+     "hit@3": 0.75,
+     "hit@5": 0.75,
+     "mrr@5": 0.625,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.4444,
+     "hit@3": 0.6667,
+     "hit@5": 0.6667,
+     "mrr@5": 0.5556,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 0.6667,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.8333,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 1.0,
+   "seconds": 0.0,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 2,
+     "all_groups@5": true
+    }
+   ]
+  },
+  {
+   "method": "dense",
+   "chunk_size": 256,
+   "overlap": 50,
+   "n_chunks": 264,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.9167,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.9444,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.8889,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.9259,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 1.0,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 1.0,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 1.0,
+   "seconds": 51.8,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 3
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    }
+   ]
+  },
+  {
+   "method": "bm25",
+   "chunk_size": 512,
+   "overlap": 50,
+   "n_chunks": 130,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.5,
+     "hit@3": 0.75,
+     "hit@5": 0.8333,
+     "mrr@5": 0.6417,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.4444,
+     "hit@3": 0.6667,
+     "hit@5": 0.7778,
+     "mrr@5": 0.5778,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 0.6667,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.8333,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 0.6667,
+   "seconds": 0.0,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 5
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 2,
+     "all_groups@5": false
+    }
+   ]
+  },
+  {
+   "method": "dense",
+   "chunk_size": 512,
+   "overlap": 50,
+   "n_chunks": 130,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.8333,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.9167,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.7778,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.8889,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 1.0,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 1.0,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 1.0,
+   "seconds": 26.9,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    }
+   ]
+  },
+  {
+   "method": "bm25",
+   "chunk_size": 1024,
+   "overlap": 50,
+   "n_chunks": 68,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.6667,
+     "hit@3": 0.75,
+     "hit@5": 0.8333,
+     "mrr@5": 0.7292,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.6667,
+     "hit@3": 0.6667,
+     "hit@5": 0.7778,
+     "mrr@5": 0.6944,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 0.6667,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.8333,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 0.6667,
+   "seconds": 0.0,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 4
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 0
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 2,
+     "all_groups@5": false
+    }
+   ]
+  },
+  {
+   "method": "dense",
+   "chunk_size": 1024,
+   "overlap": 50,
+   "n_chunks": 68,
+   "n_questions": 12,
+   "page_level": {
+    "all": {
+     "hit@1": 0.8333,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.9167,
+     "n": 12
+    },
+    "paraphrase": {
+     "hit@1": 0.7778,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 0.8889,
+     "n": 9
+    },
+    "multi": {
+     "hit@1": 1.0,
+     "hit@3": 1.0,
+     "hit@5": 1.0,
+     "mrr@5": 1.0,
+     "n": 3
+    }
+   },
+   "multi_all_groups@5": 1.0,
+   "seconds": 28.2,
+   "per_question": [
+    {
+     "id": "h01",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h02",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h03",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h04",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h05",
+     "type": "paraphrase",
+     "page_rank": 2
+    },
+    {
+     "id": "h06",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h07",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h08",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h09",
+     "type": "paraphrase",
+     "page_rank": 1
+    },
+    {
+     "id": "h10",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h11",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    },
+    {
+     "id": "h12",
+     "type": "multi",
+     "page_rank": 1,
+     "all_groups@5": true
+    }
+   ]
+  }
+ ]
+}
