@@ -1,0 +1,269 @@
+{
+ "generator": "qwen/qwen-2.5-72b-instruct",
+ "judge": "qwen/qwen-2.5-72b-instruct",
+ "temperature": 0,
+ "retriever": "dense",
+ "chunk_size": 512,
+ "top_k": 5,
+ "n_gold": 42,
+ "n_judged": 42,
+ "n_skipped": 0,
+ "stopped": null,
+ "answer_correct": 1.0,
+ "faithful": 1.0,
+ "llm_calls_used": 84,
+ "rows": [
+  {
+   "id": "q01",
+   "answer": "企業のクラウドサービス利用率は約10年で倍増した。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q02",
+   "answer": "YouTubeの利用率は全体で約9割です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q03",
+   "answer": "2024年のXの全体の利用率は約50%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q04",
+   "answer": "2024年には60代の78.8%がネット接続端末としてスマートフォンを利用しています。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q05",
+   "answer": "インターネットが「最も欠かせない」情報源になっているのは50代までです。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q06",
+   "answer": "YouTubeをニュース源として利用している割合はどの世代でも約3割程度です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q07",
+   "answer": "2024年度調査で個人の生成AIサービス利用経験は約27%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q08",
+   "answer": "20代の生成AI利用経験は約45%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q09",
+   "answer": "生成AI活用方針を定めている企業の比率は、日本の大企業では約56%に対して、中小企業では約34%にとどまる。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q10",
+   "answer": "生成AIを活用する方針を定めている企業の比率（2024年度調査）は約50%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q11",
+   "answer": "PLaMo-100Bは、PreferredNetworksの100%子会社のPreferredElementsが開発し、パラメータ数は約1000億です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q12",
+   "answer": "CyberAgentLM3-22B-Chatのパラメータ数は約220億です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q13",
+   "answer": "令和7年版情報通信白書の第Ⅰ部特集のタイトルは「広がりゆく『社会基盤』としてのデジタル」です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q14",
+   "answer": "令和7年版情報通信白書（概要）は2025年7月に総務省が公表しました。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q15",
+   "answer": "デジタル分野の主要な課題の①は、デジタル社会を支える信頼性のあるデジタル基盤の確保です。これは、AI等のデジタル技術の活用に伴う通信・計算資源・電力等の需要増大や災害リスクへの対応が求められていることを含みます。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q16",
+   "answer": "社会課題解決に向けたデジタルの役割として①に挙げられているものは、我が国の経済活性化・経済成長です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q17",
+   "answer": "2025年はラジオ放送開始から100周年です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q18",
+   "answer": "通信自由化は1985年に実施され、2025年で40周年となります。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q19",
+   "answer": "60代のスマートフォンによるインターネット接続の利用率は、2011年が2.5%、2024年が78.8%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q20",
+   "answer": "70代のスマートフォンによるインターネット接続の利用率は2024年に53.0%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q21",
+   "answer": "2017年のインターネット接続端末としてのスマートフォンの利用率は59.7%、パソコンの利用率は52.5%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q22",
+   "answer": "テレビの信頼度は全年代で58.2%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q23",
+   "answer": "2024年のキャッシュレス決済比率は42.8%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q24",
+   "answer": "2024年のインターネット広告費は3.7兆円となり、総広告費に占める構成比は47.6%になったと記載されています。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q25",
+   "answer": "マスコミ4媒体とインターネットの広告費が逆転したのは2021年です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q26",
+   "answer": "べきとされている手続の2022年度のオンライン利用率は57.6%となっています。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q27",
+   "answer": "「SNS」や「メッセージングサービス」について、そのサービスが停止すると日常生活に大きな支障が出ると回答した比率が4割を超えた。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q28",
+   "answer": "「予定管理」や「ファイル共有」を他社サービスに代替する際の課題は、保存データ移行の困難さにあるとされています。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q29",
+   "answer": "動画サービスの利用者が大きく増加したのは2020年以降です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q30",
+   "answer": "OpenAIが推論モデル「OpenAI o1」シリーズの開発を発表したのは2024年9月です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q31",
+   "answer": "Microsoftが展開している小規模モデルのシリーズ名は「Phi」シリーズです。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q32",
+   "answer": "Salesforceが日本国内で提供を発表した自律型AIエージェントの名前は「Agentforce」で、時期は2024年10月です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q33",
+   "answer": "Teslaは2026年に「Optimus」の他社向け量産を予定しています。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q34",
+   "answer": "Figure AIの「Figure02」は、BMWの工場において試験導入が実施されました。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q35",
+   "answer": "GENIACプロジェクト第1期では、計10件の開発テーマで基盤モデルの開発に取り組んだ。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q36",
+   "answer": "GENIAC第2期は2024年10月に始まり、計20件の開発テーマで基盤モデルの開発が行われている。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q37",
+   "answer": "ソフトバンクグループとOpenAIが発表した企業向けAIの名前は「クリスタル・インテリジェンス(Cristalintelligence)」です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q38",
+   "answer": "富士通が開発したAIエージェントサービスの名前は「FujitsuKozuchiAIAgent」です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q39",
+   "answer": "テキスト生成AIを使わない理由で「自分の生活や業務に必要ない」に次いで多いのは「使い方がわからない」です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q40",
+   "answer": "生成AIの活用方針を定めている日本企業の比率は、2024年度調査で約50%、2023年度調査で約43%です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q41",
+   "answer": "日本で生成AI導入に際しての懸念事項として最も多いのは「効果的な活用方法がわからない」です。",
+   "correct": 1,
+   "faithful": 1
+  },
+  {
+   "id": "q42",
+   "answer": "日本で生成AIの活用推進による自社への影響として最も多く挙げられたのは、「業務効率化や人員不足の解消につながる」です。",
+   "correct": 1,
+   "faithful": 1
+  }
+ ]
+}
