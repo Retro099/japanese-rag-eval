@@ -1,8 +1,17 @@
 # japanese-rag-eval — retrieval evaluation for Japanese government documents
 
-**One line:** a reproducible **retrieval evaluation** on a Japanese government white paper (令和7年版 情報通信白書, 総務省, CC BY 4.0): BM25 vs bge-m3 dense retrieval with hit@k and MRR, which need no LLM calls. It uses a frozen 42-question gold set plus a separately scored set of 12 harder questions. A small RAG demo (ChromaDB + FastAPI/Streamlit) and a call-capped LLM answer check are included.
+[![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](.github/workflows/ci.yml)
 
-[![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml)
+**TL;DR**
+- **Problem:** how well does retrieval find the right page in a Japanese government white paper (令和7年版 情報通信白書, 33 pages), and is keyword search (BM25) or dense embeddings (bge-m3) better?
+- **Approach:** a reproducible **retrieval evaluation** (hit@k, MRR; no LLM calls) on a frozen 42-question gold set (**AI-drafted, 15/42 hand-checked by the author, 15/15 correct**) plus 12 harder paraphrased questions scored separately.
+- **Result:** dense@512 hit@5 0.98 / MRR 0.87 on the gold set (single run; questions reuse source wording, so this is optimistic); on the 12 harder questions dense hit@1 0.83 vs BM25 0.50–0.67. **Answer quality is not the focus:** the small LLM answer check uses the same model as judge and is lenient.
+
+| Metric (single run, 2026-10-12/13) | Result | Caveat |
+|---|---|---|
+| Gold 42, dense@512 hit@5 / MRR@5 | **0.98 / 0.87** | AI-drafted questions, high wording overlap (favours BM25) |
+| Harder 12, dense@512 vs BM25 hit@1 | **0.83** vs 0.50–0.67 | only 12 questions, 1 question = 8.3 points |
+| Hand check of gold questions | **15/15 correct** | random 15 of 42 (seed 42); 27 not hand-checked |
 
 **About the questions:** all 42 gold questions and answers were **drafted by an AI assistant** from the PDF text. A script checked that every evidence quote appears on the stated page. **Author hand-checked 15/42 (random seed 42): 15 correct, 0 flagged.** Sample IDs and excerpts: `results/checklist_sample.json`. The other 27 questions are not hand-checked yet.
 
@@ -64,7 +73,7 @@ BM25 misses h02 (キャッシュレス決済 asked as 「現金以外で支払�
 
 The gold questions were drafted while reading the text, so they copy many of its phrases. Keyword search (BM25) benefits, and gold-set scores are optimistic compared with real user questions. The harder set was written to cut that overlap.
 
-### Answers (dense@512, top-5 → qwen/qwen-2.5-72b-instruct, temperature 0)
+### Secondary: answer check (not the focus; dense@512, top-5 → qwen/qwen-2.5-72b-instruct, temperature 0)
 
 | Metric | Score | How measured |
 |---|---|---|
@@ -76,12 +85,26 @@ The gold questions were drafted while reading the text, so they copy many of its
 
 LLM calls used: **84** (42 generate + 42 judge, 0 retries; hard cap set to 100).
 
+## How it works
+
+1. **Ingest:** PyMuPDF reads each page; text is NFKC-normalised and whitespace removed (PDF line breaks split Japanese words).
+2. **Chunk:** split on 。！？ into chunks of ≤ N characters with 50-character overlap; every chunk keeps its document and page number.
+3. **Retrieve:** either BM25 over character bigrams (no tokenizer, no model) or `BAAI/bge-m3` embeddings with cosine similarity.
+4. **Score retrieval:** for each gold question, the rank of the first chunk from the gold page → hit@k and MRR. No LLM involved, so it is cheap and repeatable.
+5. **Generate + judge:** top-5 chunks → Qwen answers in 1–2 sentences → a judge prompt returns `{correct, faithful}`. Every HTTP attempt counts against a hard budget.
+
 ## Quickstart
 
 ```bash
 pip install -r requirements-dev.txt && pytest -q            # 12 unit tests, no downloads
-pip install -r requirements-eval.txt                         # pymupdf + sentence-transformers (CPU OK)
+pip install -r requirements-eval.txt
 python eval/retrieval_eval.py --methods bm25 --chunk-sizes 512   # downloads the 3 PDFs, ~seconds, no LLM
+```
+
+## Reproduce the full evaluation
+
+```bash
+pip install -r requirements-eval.txt                         # pymupdf + sentence-transformers (CPU OK)
 python eval/retrieval_eval.py --methods bm25 dense --chunk-sizes 256 512 1024   # bge-m3, ~2 GB model, ~7 min on CPU
 AICREDITS_API_KEY=... python eval/llm_eval.py --max-calls 100   # OpenAI-compatible endpoint, hard call cap
 python eval/number_check.py
@@ -94,14 +117,6 @@ Or run the **Eval** workflow from the Actions tab (retrieval always; LLM part on
 
 The original demo app (FastAPI `api.py` + Streamlit `app/`, ChromaDB, Docker) is kept as-is; see `requirements-app.txt` and `.env.example`.
 
-## How it works
-
-1. **Ingest:** PyMuPDF reads each page; text is NFKC-normalised and whitespace removed (PDF line breaks split Japanese words).
-2. **Chunk:** split on 。！？ into chunks of ≤ N characters with 50-character overlap; every chunk keeps its document and page number.
-3. **Retrieve:** either BM25 over character bigrams (no tokenizer, no model) or `BAAI/bge-m3` embeddings with cosine similarity.
-4. **Score retrieval:** for each gold question, the rank of the first chunk from the gold page → hit@k and MRR. No LLM involved, so it is cheap and repeatable.
-5. **Generate + judge:** top-5 chunks → Qwen answers in 1–2 sentences → a judge prompt returns `{correct, faithful}`. Every HTTP attempt counts against a hard budget.
-
 ## Limitations
 
 - **Gold set is AI-drafted; author hand-checked 15/42 (random seed 42): 15 correct, 0 flagged.** The other 27 are not hand-checked. Questions and answers were drafted by an AI assistant from the PDF text. Every evidence quote was checked by script to appear on the stated page. The 12 harder questions are also AI-written.
@@ -111,7 +126,7 @@ The original demo app (FastAPI `api.py` + Streamlit `app/`, ChromaDB, Docker) is
 - Facts appear in both the summary and the chapter, so page-level hit can miss an equally valid page.
 - No reranker in this run (earlier reranker trials in the old repo were rejected).
 
-## Data and license
+## Data source
 
 See [DATA_SOURCES.md](DATA_SOURCES.md). Source: 「令和7年版 情報通信白書」（総務省）, CC BY 4.0. PDFs are downloaded at run time, not committed.
 
@@ -119,4 +134,18 @@ See [DATA_SOURCES.md](DATA_SOURCES.md). Source: 「令和7年版 情報通信白
 
 Split from [Retro099/ML-Projects](https://github.com/Retro099/ML-Projects) (archived) on 2026-10-12. The old "0.96 faithfulness" figure there came from a different, unreproducible setup (curated contexts, 70B judge) and is **not** claimed here; the numbers above replace it.
 
-Code license: MIT.
+## Repository structure
+
+```text
+rag_eval/   # evaluation library: BM25, metrics, text normalisation, PDF sources, capped LLM client
+eval/       # retrieval_eval.py, hard_eval.py, llm_eval.py, number_check.py, overlap.py
+data/       # gold.jsonl (42), gold_hard.jsonl (12)
+results/    # committed raw outputs behind every number above
+scripts/    # sample_checklist.py (15-question hand check), retrieve_smoke.py
+src/, api.py, app/   # original RAG demo (ChromaDB + FastAPI + Streamlit), kept as-is
+tests/      # 12 unit tests (no downloads)
+```
+
+## License
+
+Code: MIT ([LICENSE](LICENSE)). Data: 総務省, CC BY 4.0 ([DATA_SOURCES.md](DATA_SOURCES.md)).
