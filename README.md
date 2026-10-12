@@ -1,10 +1,27 @@
-# japanese-rag-eval
+# japanese-rag-eval — retrieval evaluation for Japanese government documents
 
-**One line:** a Japanese RAG pipeline (bge-m3 + ChromaDB + FastAPI/Streamlit) with a **reproducible evaluation**: a frozen 42-question gold set on a CC BY 4.0 government white paper, retrieval metrics that need no LLM, and a call-capped LLM judge.
+**One line:** a reproducible **retrieval evaluation** on a Japanese government white paper (令和7年版 情報通信白書, 総務省, CC BY 4.0): BM25 vs bge-m3 dense retrieval with hit@k and MRR, which need no LLM calls. It uses a frozen 42-question gold set plus a separately scored set of 12 harder questions. A small RAG demo (ChromaDB + FastAPI/Streamlit) and a call-capped LLM answer check are included.
 
 [![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml)
 
-## Results (single run, 2026-10-12, GitHub Actions CPU, [run 38246449992](https://github.com/Retro099/japanese-rag-eval/actions/runs/38246449992))
+**About the questions:** all 42 gold questions and answers were **drafted by an AI assistant** from the PDF text. A script checked that every evidence quote appears on the stated page. **Author hand check: pending author check** (sample of 15, seed 42; this line will show how many were confirmed).
+
+## BM25 vs dense at a glance
+
+Page-level retrieval, from `results/retrieval.json` (42 questions) and `results/retrieval_hard.json` (12 harder questions). No LLM calls.
+
+| Question set | Retriever (chunk chars) | hit@1 | hit@5 | MRR@5 |
+|---|---|---|---|---|
+| Gold 42 (wording close to the source) | **bge-m3 dense (512, default)** | 0.81 | 0.98 | 0.87 |
+| Gold 42 | BM25 char bigrams (1024, best BM25) | 0.86 | 1.00 | 0.90 |
+| Gold 42 | BM25 char bigrams (512) | 0.74 | 0.98 | 0.84 |
+| Harder 12 (paraphrased + multi-chunk) | **bge-m3 dense (512)** | 0.83 | 1.00 | 0.92 |
+| Harder 12 | BM25 char bigrams (1024) | 0.67 | 0.83 | 0.73 |
+| Harder 12 | BM25 char bigrams (512) | 0.50 | 0.83 | 0.64 |
+
+On the gold set BM25 can beat dense retrieval because the questions reuse the source wording (see the overlap note below). When the question is paraphrased, BM25 drops and dense retrieval holds up. With only 12 hard questions, one question = 8.3 points, so treat this as a direction, not a precise gap.
+
+## Full results (single run, 2026-10-12, GitHub Actions CPU, [run 38246449992](https://github.com/Retro099/japanese-rag-eval/actions/runs/38246449992))
 
 Corpus: 3 PDFs from 令和7年版 情報通信白書 (総務省), 33 pages. Gold set: 42 questions with answer + page (`data/gold.jsonl`). Raw outputs: `results/`.
 
@@ -21,6 +38,32 @@ Corpus: 3 PDFs from 令和7年版 情報通信白書 (総務省), 33 pages. Gold
 
 Stricter "evidence-level" scores (the chunk must contain the exact evidence sentence) are in `results/retrieval.json`; e.g. dense@512 MRR 0.78, BM25@1024 MRR 0.91.
 
+### Harder questions (scored separately, no LLM calls)
+
+`data/gold_hard.jsonl`: 12 questions written on 2026-10-13 **by an AI assistant**. They deliberately avoid the source wording and were written before any retriever was run on them. 9 are paraphrased single-fact questions; 3 are multi-chunk questions that need facts from two different pages. A question can list more than one acceptable page (e.g. a fact that appears in both the summary and the chapter). Script: `eval/hard_eval.py`. Output: `results/retrieval_hard.json`. Run on the bot's CPU box on 2026-10-13; the 42-question run was repeated in the same session and reproduced `results/retrieval.json` exactly.
+
+| Retriever | Chunk size | hit@1 | hit@3 | hit@5 | MRR@5 | paraphrase (9) MRR@5 | multi (3): all pages in top 5 |
+|---|---|---|---|---|---|---|---|
+| BM25 | 256 | 0.50 | 0.75 | 0.75 | 0.63 | 0.56 | 3/3 |
+| bge-m3 dense | 256 | 0.92 | 1.00 | 1.00 | 0.94 | 0.93 | 3/3 |
+| BM25 | 512 | 0.50 | 0.75 | 0.83 | 0.64 | 0.58 | 2/3 |
+| bge-m3 dense | 512 | 0.83 | 1.00 | 1.00 | 0.92 | 0.89 | 3/3 |
+| BM25 | 1024 | 0.67 | 0.75 | 0.83 | 0.73 | 0.69 | 2/3 |
+| bge-m3 dense | 1024 | 0.83 | 1.00 | 1.00 | 0.92 | 0.89 | 3/3 |
+
+BM25 misses h02 (キャッシュレス決済 asked as 「現金以外で支払われた割合」) and h03 (SNS asked as 「ソーシャルメディア」) at every chunk size. These are word-substitution paraphrases that bigram matching cannot bridge.
+
+### Question / source wording overlap (why BM25 looks strong on the gold set)
+
+`eval/overlap.py` → `results/overlap.json`: the share of a question's character bigrams that also appear in its evidence sentence.
+
+| Set | n | mean | median | max |
+|---|---|---|---|---|
+| Gold 42 | 42 | 0.36 | 0.35 | 0.85 |
+| Harder 12 | 12 | 0.09 | 0.07 | 0.29 |
+
+The gold questions were drafted while reading the text, so they copy many of its phrases. Keyword search (BM25) benefits, and gold-set scores are optimistic compared with real user questions. The harder set was written to cut that overlap.
+
 ### Answers (dense@512, top-5 → qwen/qwen-2.5-72b-instruct, temperature 0)
 
 | Metric | Score | How measured |
@@ -36,12 +79,15 @@ LLM calls used: **84** (42 generate + 42 judge, 0 retries; hard cap set to 100).
 ## Quickstart
 
 ```bash
-pip install -r requirements-dev.txt && pytest -q            # 10 unit tests, no downloads
+pip install -r requirements-dev.txt && pytest -q            # 12 unit tests, no downloads
 pip install -r requirements-eval.txt                         # pymupdf + sentence-transformers (CPU OK)
 python eval/retrieval_eval.py --methods bm25 --chunk-sizes 512   # downloads the 3 PDFs, ~seconds, no LLM
 python eval/retrieval_eval.py --methods bm25 dense --chunk-sizes 256 512 1024   # bge-m3, ~2 GB model, ~7 min on CPU
 AICREDITS_API_KEY=... python eval/llm_eval.py --max-calls 100   # OpenAI-compatible endpoint, hard call cap
 python eval/number_check.py
+python eval/hard_eval.py --methods bm25 dense --chunk-sizes 256 512 1024   # 12 harder questions
+python eval/overlap.py                                       # question/evidence wording overlap
+python scripts/sample_checklist.py                           # 15-question hand-check sample (seed 42)
 ```
 
 Or run the **Eval** workflow from the Actions tab (retrieval always; LLM part only if `run_llm` is ticked and the secret exists).
@@ -58,8 +104,8 @@ The original demo app (FastAPI `api.py` + Streamlit `app/`, ChromaDB, Docker) is
 
 ## Limitations
 
-- **Gold set is AI-drafted, author spot-check pending.** Questions and answers were drafted by an AI assistant from the PDF text; every evidence quote was checked by script to appear on the stated page, but a human has not reviewed all 42 yet.
-- Questions were written while reading the text, so they share wording with it. That favours keyword search (BM25) and makes scores optimistic versus real user questions.
+- **Gold set is AI-drafted; author hand check: pending author check.** Questions and answers were drafted by an AI assistant from the PDF text. Every evidence quote was checked by script to appear on the stated page. The 12 harder questions are also AI-written.
+- Gold questions share wording with the text (mean bigram overlap 0.36 vs 0.09 for the harder set). That favours BM25 and makes gold-set scores optimistic. The harder set is small (12) and was written to avoid source wording, which works against BM25 by design.
 - Small corpus (33 pages, 3 PDFs from one white paper); one run, no confidence intervals. With 42 questions, one question = 2.4 points.
 - The judge is the same model as the generator; see the q12 example above.
 - Facts appear in both the summary and the chapter, so page-level hit can miss an equally valid page.

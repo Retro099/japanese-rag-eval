@@ -29,6 +29,10 @@ jobs:
           pip install -r requirements-eval.txt
       - name: Retrieval eval (no LLM calls; BM25 + bge-m3, chunk-size ablation)
         run: python eval/retrieval_eval.py --methods bm25 dense --chunk-sizes 256 512 1024 --out results/retrieval.json
+      - name: Harder question set + wording overlap (no LLM calls)
+        run: |
+          python eval/hard_eval.py --methods bm25 dense --chunk-sizes 256 512 1024 --out results/retrieval_hard.json
+          python eval/overlap.py
       - name: LLM answer eval
         if: ${{ inputs.run_llm }}
         env:
