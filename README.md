@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](.github/workflows/ci.yml)
 
+No live demo: this is an evaluation repo; run it locally with the steps in [Quickstart](#quickstart).
+
 **TL;DR**
 - **Problem:** how well does retrieval find the right page in a Japanese government white paper (令和7年版 情報通信白書, 33 pages), and is keyword search (BM25) or dense embeddings (bge-m3) better?
 - **Approach:** a reproducible **retrieval evaluation** (hit@k, MRR; no LLM calls) on a frozen 42-question gold set (**AI-drafted, 15/42 hand-checked by the author, 15/15 correct**) plus 12 harder paraphrased questions scored separately.
@@ -132,7 +134,7 @@ See [DATA_SOURCES.md](DATA_SOURCES.md). Source: 「令和7年版 情報通信白
 
 ## History
 
-Split from [Retro099/ML-Projects](https://github.com/Retro099/ML-Projects) (archived) on 2026-10-12. The old "0.96 faithfulness" figure there came from a different, unreproducible setup (curated contexts, 70B judge) and is **not** claimed here; the numbers above replace it.
+Split from the archived ML-Projects monorepo on 2026-10-12; this repo, [Retro099/japanese-rag-eval](https://github.com/Retro099/japanese-rag-eval), is the maintained version (sibling projects: [credit-card-fraud-detection](https://github.com/Retro099/credit-card-fraud-detection), [jp-meeting-to-crm-fields](https://github.com/Retro099/jp-meeting-to-crm-fields)). The old "0.96 faithfulness" figure there came from a different, unreproducible setup (curated contexts, 70B judge) and is **not** claimed here; the numbers above replace it.
 
 ## Repository structure
 
