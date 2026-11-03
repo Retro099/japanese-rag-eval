@@ -1,5 +1,7 @@
 # japanese-rag-eval — retrieval evaluation for Japanese government documents
 
+**Evaluation work, 42 questions.** Retrieval evaluation alongside [jp-meeting-to-crm-fields](https://github.com/Retro099/jp-meeting-to-crm-fields); not a production system.
+
 [![CI](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/Retro099/japanese-rag-eval/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](.github/workflows/ci.yml)
 
 No live demo: this is an evaluation repo; run it locally with the steps in [Quickstart](#quickstart).
@@ -118,6 +120,21 @@ python scripts/sample_checklist.py                           # 15-question hand-
 Or run the **Eval** workflow from the Actions tab (retrieval always; LLM part only if `run_llm` is ticked and the secret exists).
 
 The original demo app (FastAPI `api.py` + Streamlit `app/`, ChromaDB, Docker) is kept as-is; see `requirements-app.txt` and `.env.example`.
+
+## Failure analysis (gold 42, bge-m3 dense, 512 chars)
+
+Source: `per_question` page ranks in `results/retrieval.json` (same single run as the tables above). No new runs.
+
+**42 questions is a small test set** (one question = 2.4 points), so hit@5 0.98 and MRR 0.87 are indications for this white paper, not general guarantees.
+
+| Question | Dense@512 page rank | BM25@512 page rank | Likely reason (from the data) |
+|---|---|---|---|
+| q12 (CyberAgentLM3-22B-Chat parameter count) | **missed top 5** | 4 | Exact model-name string. BM25 finds it at every chunk size (rank 3-4); dense misses it at every chunk size. |
+| q02, q03, q04 (usage rates, summary p.3) | 3, 4, 5 | 1, 1, 1 | Several near-identical usage-rate sentences on similar pages; exact wording wins (BM25 rank 1). |
+| q05 (internet as key source, p.4) | 2 | 1 | Same pattern: wording match beats dense. |
+| q13, q21, q40 | 2, 2, 3 | 0 (missed), 2, 2 | Both retrievers rank another page first. The same facts appear in the summary and the chapter PDFs, so a page-level "miss" can be an equally valid page. |
+
+The other 34 questions rank the gold page first. Takeaway: on this set, dense loses mostly on exact names and repeated statistics; a hybrid (BM25 + dense) is the obvious next test, not yet run.
 
 ## Limitations
 
